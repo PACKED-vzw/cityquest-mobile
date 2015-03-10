@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="be.packed.cityquest" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>CityQuest</name>
+    <description>
+        Athenaplus Cityquest App
+    </description>
+    <author email="joris@packed.be" href="http://packed.be">
+        Joris Janssens
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="false" />
+    <preference name="UIWebViewBounce" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="BackupWebStorage" value="none" />
+    <icon src="res/icon.png" />
+</widget>

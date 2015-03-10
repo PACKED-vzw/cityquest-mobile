@@ -1,0 +1,111 @@
+<view title="'Cityquest - settings'">
+
+    <content has-header="true" has-subheader="false">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <h2>Disclaimer</h2>
+
+                        <p ng-bind-html='quest.details.disclaimer'></p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <h2>Contact</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-40">Organisation</div>
+            <div class="col col-60">{{quest.details.organisation}}</div>
+        </div>
+        <div class="row">
+            <div class="col col-40">Name</div>
+            <div class="col col-60">{{quest.details.contact.name}}</div>
+        </div>
+        <div class="row">
+            <div class="col col-40">Telephone</div>
+            <div class="col col-60">{{quest.details.contact.telephone}}</div>
+        </div>
+        <div class="row">
+            <div class="col col-40">Email</div>
+            <div class="col col-60">{{quest.details.contact.mail}}</div>
+        </div>
+
+
+        <div class="card">
+            <div class="item item-text-wrap">
+                <h2>HOW DOES IT WORK?</h2>
+
+
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap item-help">
+                        <div class="icon-help-box"><i class="icon ion-ios7-location-outline"></i></div>
+                        <p>Find the location by following the instructions and hints.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap item-help">
+                        <div class="icon-help-box"><i class="icon ion-ios7-information-outline"></i></div>
+                        <p>The QR provides some information about the location</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap item-help">
+                        <div class="icon-help-box"><i class="icon ion-search"></i></div>
+                        <p>Found the location? Search for a QR and scan it!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap item-help">
+                        <div class="icon-help-box"><i class="icon ion-clock"></i></div>
+                        <p>The quest is against the clock. Be efficient and finish in time!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <h2>SETTINGS</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <button ng-show="quest" class="button button-full button-assertive" ng-click="resetQuest()">
+            Reset this device
+        </button>
+
+
+    </content>
+
+
+</view>
+
