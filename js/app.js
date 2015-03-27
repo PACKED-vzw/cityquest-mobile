@@ -22,7 +22,7 @@ function startScan() {
 
 }
 
-angular.module('cityquest', ['ionic', 'cityquest.services', 'cityquest.controllers'])
+angular.module('cityquest', ['ionic', 'cityquest.services', 'cityquest.controllers', 'pascalprecht.translate'])
 
 
     .config(function ($stateProvider, $urlRouterProvider) {
@@ -80,3 +80,14 @@ angular.module('cityquest', ['ionic', 'cityquest.services', 'cityquest.controlle
         $urlRouterProvider.otherwise('/load');
 
     });
+    
+    /* Translations */
+    /*http://www.ng-newsletter.com/posts/angular-translate.html*/
+    .config (function ($translateProvider) {
+		$translateProvider.useStaticFilesLoader ({
+			prefix: '/lang/',
+			suffix: '.json'
+		});
+		$translateProvider.useLocalStorage ();
+		$translateProvider.preferredLanguage ('en');
+	});
