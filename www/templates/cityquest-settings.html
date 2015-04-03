@@ -1,0 +1,111 @@
+<view title="'Cityquest - settings'">
+
+    <content has-header="true" has-subheader="false">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <h2>{{settings-disclaimer | translate}}</h2>
+
+                        <p ng-bind-html='quest.details.disclaimer'></p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <h2>{{settings-contact | translate}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-40">{{settings-contact-org | translate}}</div>
+            <div class="col col-60">{{quest.details.organisation}}</div>
+        </div>
+        <div class="row">
+            <div class="col col-40">{{settings-contact-name | translate}}</div>
+            <div class="col col-60">{{quest.details.contact.name}}</div>
+        </div>
+        <div class="row">
+            <div class="col col-40">{{settings-contact-phone | translate}}</div>
+            <div class="col col-60">{{quest.details.contact.telephone}}</div>
+        </div>
+        <div class="row">
+            <div class="col col-40">{{settings-contact-mail | translate}}</div>
+            <div class="col col-60">{{quest.details.contact.mail}}</div>
+        </div>
+
+
+        <div class="card">
+            <div class="item item-text-wrap">
+                <h2>{{index-howto | translate}}</h2>
+
+
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap item-help">
+                        <div class="icon-help-box"><i class="icon ion-ios7-location-outline"></i></div>
+                        <p>{{index-howto-stage1 | translate}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap item-help">
+                        <div class="icon-help-box"><i class="icon ion-ios7-information-outline"></i></div>
+                        <p>{{index-howto-stage2 | translate}}/p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap item-help">
+                        <div class="icon-help-box"><i class="icon ion-search"></i></div>
+                        <p>{{index-howto-stage3 | translate}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap item-help">
+                        <div class="icon-help-box"><i class="icon ion-clock"></i></div>
+                        <p>{{index-howto-stage4 | translate}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <h2>{{settings-settings | translate}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <button ng-show="quest" class="button button-full button-assertive" ng-click="resetQuest()">
+            {{settings-button-reset | translate}}
+        </button>
+
+
+    </content>
+
+
+</view>
+

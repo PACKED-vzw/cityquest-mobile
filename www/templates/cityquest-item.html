@@ -1,0 +1,150 @@
+<view title="'Cityquest'" hide-back-button="true">
+    <content has-header="true" has-subheader="false">
+        <div class="row no-padding no-margin">
+            <div class="col no-padding no-margin">
+                <img id="cq-header" src="{{progress.baseUrl}}{{currentItem.image}}"/>
+
+            </div>
+        </div>
+    <div class="row tracker-row">
+        <div class="col">
+
+            <ol class="majortrckr" data-majortrckr-steps="{{quest.details.items.length}}">
+                <li ng-repeat="item in itemTracker track by $index" class="{{itemTracker[$index]}}"></li>
+            </ol>
+
+            <div class="card completed-card" ng-show="scanSuccess&&!skippedItem">
+                <div class="item item-text-wrap">
+                    <span class="cq-notification">{{item-notification-found | translate}}</span>
+                </div>
+            </div>
+            <div class="card completed-card" ng-show="skippedItem">
+                <div class="item item-text-wrap">
+                    <span class="cq-notification">{{item-notification-skipped | translate}}</span>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <div class="row" ng-show="debug">
+        <div class="card">
+            <div class="item item-text-wrap">
+                <button class="button" ng-click="modal.show()">{{item-modal-open | translate}}</button>
+                {{ quest.details.items }}
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="debug">
+        <div class="card">
+            <div class="item item-text-wrap">
+                {{ progress }}
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-hide="scanSuccess">
+        <div class="col">
+            <div class="card">
+                <div class="item item-text-wrap">
+                    <h2 class="item-title">{{currentItem.title}}</h2>
+
+                    <p ng-bind-html='currentItem.crypticDescriptionItem'></p>
+                    <!--<p>{{ currentItem.crypticDescription }}</p>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="scanSuccess">
+        <div class="col">
+            <div class="card">
+                <div class="item item-text-wrap">
+                    <h2 class="item-title">{{currentItem.title}}</h2>
+                    <p ng-bind-html='currentItem.descriptionItem'></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-hide="scanSuccess||!showHintHeader">
+        <div class="col">
+            <div class="card">
+                <div class="item item-text-wrap">
+                    <h2>{{item-hints | translate}}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div id="hints-container" ng-hide="scanSuccess" >
+            <div class="item-hint" ng-repeat="hint in currentItem.hints" ng-show="hint{{$index+1}}">
+                <div class="row">
+                    <div class="col">
+                        <div class="stat-item">
+                            <img class="image-hint" src="{{progress.baseUrl}}{{hint.image}}" >
+                            <h5>{{hint.title}}</h5>
+
+                            <p ng-bind-html='hint.description'></p>
+                            <!--<p>{{hint.description}}</p>-->
+
+
+
+                            <p>
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" ng-hide="scanSuccess">
+                <div class="col">
+                    <button class="button button-small button-assertive button-indent" ng-click="showHint()" ng-show="showHintButton()">
+                        {{item-button-want-hint | translate}}
+                    </button>
+                    <button class="button button-small button-light button-indent" ng-hide="showHintButton()">
+                        {{item-button-no-hints | translate}}
+                    </button>
+                    <button class="button button-small button-positive button-indent" ng-click="skipItem()">
+                        {{item-button-skip | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row" >
+            <div class="card">
+
+
+            </div>
+
+
+
+        </div>
+
+        <div class="row end-row">
+            <div class="col">
+                <a class="button button-full button-assertive" ng-click="checkThis()" ng-hide="scanSuccess">
+                    {{item-button-found | translate}}
+                </a>
+                <a class="button button-full button-assertive" ng-show="scanSuccess&&!lastItem" ng-click="goToNextItem()">
+                    {{item-button-next | translate}}
+                </a>
+
+                <a class="button button-full button-assertive" ng-show="scanSuccess&&lastItem" href="#/complete" >
+                    {{item-button-last | translate}}
+                </a>
+
+            </div>
+        </div>
+        <!-- empty div otherwise margin at bottom is not set correctly -->
+
+        <div>
+            <br/>
+
+        </div>
+
+
+    </content>
+
+</view>
