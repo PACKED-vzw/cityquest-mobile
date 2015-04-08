@@ -50,21 +50,19 @@
 
 
                                     {{quest.details.imageFile}}
-                                    imageding{{imageDing}}
+                                    {{imageDing}}
                                     {{ 'load-img-1' | translate }}
-                                    <img src="/{{quest.details.imageFile}}">
+                                    <img src="{{quest.details.imageFile}}">
                                     {{ 'load-img-2' | translate }}
                                     <img src="{{quest.details.imageFile}}">
                                     {{ 'load-img-3' | translate }}
-                                    <img src="file:///{{quest.details.imageFile}}">
+                                    <img src={{quest.details.imageFile}}">
                                     {{ 'load-img-4' | translate }}
-                                    <img src="file://{{quest.details.imageFile}}">
+                                    <img src="{{quest.details.imageFile}}">
                                     {{ 'load-img-5' | translate }}
-                                    <img src="local://{{quest.details.imageFile}}">
+                                    <img src="{{quest.details.imageFile}}">
                                     {{ 'load-img-6' | translate }}
-                                    <img src="imageDing">
-
-                                    {{imgFile}}
+                                    <img src="{{imgFile}}">
                                     <img ng-src="{{imgFile}}">
 
 

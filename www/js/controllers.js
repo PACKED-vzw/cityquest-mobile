@@ -159,8 +159,10 @@ angular.module('cityquest.controllers', [])
                                         function(entry) {
 
                                             $scope.imgFile = entry.toURL();
+                                           // alert ($scope.imgFile);
                                             var baseUrl = $scope.imgFile.split("resources");
                                             $scope.baseUrl = baseUrl[0];
+                                            //alert ($scope.baseUrl);
                                         },
                                         function(error) {
                                             alert("Download Error Source -> " + error.source);
