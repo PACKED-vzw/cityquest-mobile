@@ -15,12 +15,12 @@
 
             <div class="card completed-card" ng-show="scanSuccess&&!skippedItem">
                 <div class="item item-text-wrap">
-                    <span class="cq-notification">{{item-notification-found | translate}}</span>
+                    <span class="cq-notification">{{ 'item-notification-found' | translate }}</span>
                 </div>
             </div>
             <div class="card completed-card" ng-show="skippedItem">
                 <div class="item item-text-wrap">
-                    <span class="cq-notification">{{item-notification-skipped | translate}}</span>
+                    <span class="cq-notification">{{ 'item-notification-skipped' | translate }}</span>
                 </div>
             </div>
 
@@ -32,7 +32,7 @@
     <div class="row" ng-show="debug">
         <div class="card">
             <div class="item item-text-wrap">
-                <button class="button" ng-click="modal.show()">{{item-modal-open | translate}}</button>
+                <button class="button" ng-click="modal.show()">{{ 'item-modal-open' | translate }}</button>
                 {{ quest.details.items }}
             </div>
         </div>
@@ -70,7 +70,7 @@
         <div class="col">
             <div class="card">
                 <div class="item item-text-wrap">
-                    <h2>{{item-hints | translate}}</h2>
+                    <h2>{{ 'item-hints' | translate }}</h2>
                 </div>
             </div>
         </div>
@@ -99,13 +99,13 @@
             <div class="row" ng-hide="scanSuccess">
                 <div class="col">
                     <button class="button button-small button-assertive button-indent" ng-click="showHint()" ng-show="showHintButton()">
-                        {{item-button-want-hint | translate}}
+                        {{ 'item-button-want-hint' | translate }}
                     </button>
                     <button class="button button-small button-light button-indent" ng-hide="showHintButton()">
-                        {{item-button-no-hints | translate}}
+                        {{ 'item-button-no-hints' | translate }}
                     </button>
                     <button class="button button-small button-positive button-indent" ng-click="skipItem()">
-                        {{item-button-skip | translate}}
+                        {{ 'item-button-skip' | translate }}
                     </button>
                 </div>
             </div>
@@ -125,14 +125,14 @@
         <div class="row end-row">
             <div class="col">
                 <a class="button button-full button-assertive" ng-click="checkThis()" ng-hide="scanSuccess">
-                    {{item-button-found | translate}}
+                    {{ 'item-button-found' | translate }}
                 </a>
                 <a class="button button-full button-assertive" ng-show="scanSuccess&&!lastItem" ng-click="goToNextItem()">
-                    {{item-button-next | translate}}
+                    {{ 'item-button-next' | translate }}
                 </a>
 
                 <a class="button button-full button-assertive" ng-show="scanSuccess&&lastItem" href="#/complete" >
-                    {{item-button-last | translate}}
+                    {{ 'item-button-last' | translate }}
                 </a>
 
             </div>

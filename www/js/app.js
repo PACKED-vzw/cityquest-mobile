@@ -25,7 +25,7 @@ function startScan() {
 angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.services', 'cityquest.controllers'])
 
 
-    .config(function ($stateProvider, $urlRouterProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $translateProvider) {
 
         // Ionic uses AngularUI Router which uses the concept of states
         // Learn more here: https://github.com/angular-ui/ui-router
@@ -79,12 +79,13 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/load');
 
+        $translateProvider.useStaticFilesLoader ({
+            prefix: 'lang/',
+            suffix: '.json'
+        });
+        $translateProvider.preferredLanguage('en_GB');
+        $translateProvider.fallbackLanguage('en_GB')
+
     })
     
-    .config(['$translateProvider', function ($translateProvider) {
-    	$translateProvider.preferredLanguage('nl');
-    	$translateProvider.useStaticFilesLoader ({
-    		prefix: 'lang/',
-    		suffix: '.json'
-    	});
-}]);
+    ;

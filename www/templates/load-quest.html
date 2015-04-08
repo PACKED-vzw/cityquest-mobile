@@ -10,10 +10,10 @@
                         <div ng-hide="quest">
                             <div class="item item-text-wrap">
                                 <span class="cq-notification">
-                                    <p>{{load-notification-1 | translate}}</p>
-                                    <p>{{load-notification-2 | translate}}</p>
-                                    <p>{{load-notification-3 | translate}}</p>
-                                    <p>{{load-notification-4 | translate}}</p>
+                                    <p>{{ 'load-notification-1' | translate }}</p>
+                                    <p>{{ 'load-notification-2' | translate }}</p>
+                                    <p>{{ 'load-notification-3' | translate }}</p>
+                                    <p>{{ 'load-notification-4' | translate }}</p>
                                 </span>
                             </div>
 
@@ -24,7 +24,7 @@
                                 </label>
                             </div>
                             <a class="button button-full button-assertive" ng-click="loadQuest(key)">
-                                {{load-button-load | translate}}
+                                {{ 'load-button-load' | translate }}
                             </a>
 
                         </div>
@@ -34,34 +34,34 @@
                             <div class="item item-text-wrap">
 
                                 <button ng-show="quest" class="button button-full button-positive button-assertive" ng-click="startQuest()">
-                                    {{load-button-start | translate}}
+                                    {{ 'load-button-start' | translate }}
                                 </button>
 
                                 <button ng-show="progress" class="button button-full button-positive button-assertive" ng-click="resumeQuest()">
-                                    {{load-button-resume | translate}}
+                                    {{ 'load-button-resume' | translate }}
                                 </button>
 
 
 
                                 <div ng-show="debug">
                                     <button ng-show="progress" class="button button-full button-positive button-assertive" ng-click="downloadAll()">
-                                        {{load-button-image | translate}}
+                                        {{ 'load-button-image' | translate }}
                                     </button>
 
 
                                     {{quest.details.imageFile}}
                                     imageding{{imageDing}}
-                                    {{load-img-1 | translate}}
+                                    {{ 'load-img-1' | translate }}
                                     <img src="/{{quest.details.imageFile}}">
-                                    {{load-img-2 | translate}}
+                                    {{ 'load-img-2' | translate }}
                                     <img src="{{quest.details.imageFile}}">
-                                    {{load-img-3 | translate}}
+                                    {{ 'load-img-3' | translate }}
                                     <img src="file:///{{quest.details.imageFile}}">
-                                    {{load-img-4 | translate}}
+                                    {{ 'load-img-4' | translate }}
                                     <img src="file://{{quest.details.imageFile}}">
-                                    {{load-img-5 | translate}}
+                                    {{ 'load-img-5' | translate }}
                                     <img src="local://{{quest.details.imageFile}}">
-                                    {{load-img-6 | translate}}
+                                    {{ 'load-img-6' | translate }}
                                     <img src="imageDing">
 
                                     {{imgFile}}
