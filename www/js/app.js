@@ -82,7 +82,7 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
     })
     
     .config(['$translateProvider', function ($translateProvider) {
-    	$translateProvider.preferredLanguage('enGB');
+    	$translateProvider.preferredLanguage('nl');
     	$translateProvider.useStaticFilesLoader ({
     		prefix: 'lang/',
     		suffix: '.json'
