@@ -221,7 +221,11 @@ angular.module('cityquest.controllers', [])
 
         $scope.startQuest = function(){
             if(!$scope.baseUrl){
-                $scope.baseUrl = $scope.progress.baseUrl;
+                if (typeof ($scope.progress) == 'undefined') {
+                    $scope.baseUrl = '';
+                } else {
+                    $scope.baseUrl = $scope.progress.baseUrl;
+                }
             }
 
             // progress object will keep track of current quest
@@ -264,10 +268,11 @@ angular.module('cityquest.controllers', [])
     .controller('CityquestItemCtrl', function ($scope, $rootScope, $stateParams, QRScanService, $ionicModal, ProgressTrackerService) {
         $scope.setCompletedState = function(){
             $scope.scanSuccess = true;
-            var order = $scope.currentItem.order + 1;
+            var order = parseInt ($scope.currentItem.order, 10) + 1;
             $scope.itemTracker = ProgressTrackerService.createTracker($scope.quest.details.items, order);
-
-            $scope.$apply($scope.scanSuccess);
+            if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
+                $scope.$apply($scope.scanSuccess);
+            }
         };
 
         // Load the modal from the given template URL
@@ -287,13 +292,52 @@ angular.module('cityquest.controllers', [])
         }
 
 
-        $scope.getItemByValue = function(arr, value) {
+        /*$scope.getItemByValue = function (arr, value) {
             for (var i=0, iLen=arr.length; i<iLen; i++) {
                 if (arr[i].order == value) return arr[i];
             }
+        };*/
+        /*
+        Function to return an item by its order (item.order)
+        Supports order of type "1" or "01"
+        Sets missing variables
+        @param array items
+        @param string order
+        @return object item
+         */
+        $scope.getItemByValue = function (items, order) {
+            order = parseInt (order, 10);
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].order == order) {
+                    var item = items[i];
+                }
+            }
+            /*item = $scope.setMissingAttributes (item)*/;
+            return item;
         };
+
+        /*
+        Function to set all attributes for an item that are not provided by the API
+        @param object item
+        @return object item
+         */
+        /*$scope.setMissingAttributes = function (item) {
+            var attributes = ['crypticDescriptionItem', 'descriptionItem', 'hints', 'image', 'itemid', 'order', 'qrcode', 'title'];
+            for (var i = 0; i < attributes.length; i++) {
+                var attribute = attributes[i];
+                if (typeof (item[attributes]) == 'undefined') {
+                    if (attribute == 'hints') {
+                        item[attribute] = [];
+                    } else {
+                        item[attribute] = '';
+                    }
+                }
+            }
+            return item;
+        };*/
+
         $scope.checkIfLastItem = function(){
-            if( typeof $scope.getItemByValue($rootScope.quest.details.items, parseInt($stateParams.itemId) + 1) === "undefined"){
+            if( typeof $scope.getItemByValue($rootScope.quest.details.items, parseInt($stateParams.itemId, 10) + 1) == 'undefined'){
                 $scope.lastItem = true;
             }
         };
@@ -307,12 +351,18 @@ angular.module('cityquest.controllers', [])
 
 
         $scope.quest = $rootScope.quest;
+        console.log ($scope.quest);
         $scope.progress = $rootScope.progress;
-
+        if (typeof ($rootScope.quest.details.items) == 'string') {
+            $rootScope.quest.details.items = JSON.parse ($rootScope.quest.details.items);
+        }
+        console.log ($rootScope.quest.details.items);
+        console.log (JSON.stringify ($rootScope.quest.details.items));
+        console.log ($stateParams.itemId);
         $scope.currentItem = $scope.getItemByValue($rootScope.quest.details.items, $stateParams.itemId);
 
         $scope.checkIfLastItem();
-        $scope.progress.activeItem = $scope.currentItem
+        $scope.progress.activeItem = $scope.currentItem;
 
         $scope.scanSuccess = false;
 
@@ -352,7 +402,7 @@ angular.module('cityquest.controllers', [])
                 return true;
             }
             return false;
-        }
+        };
 
         // hints
         $scope.progress.hints[$scope.currentItem.order] = 0;
@@ -388,10 +438,10 @@ angular.module('cityquest.controllers', [])
 
         $scope.setLastItem = function(){
             $scope.lastItem = true;
-        }
+        };
 
         $scope.goToNextItem = function(){
-            var next = $scope.currentItem.order + 1;
+            var next = parseInt ($scope.currentItem.order, 10) + 1;
             window.location = "#/items/" + next;
         };
 
