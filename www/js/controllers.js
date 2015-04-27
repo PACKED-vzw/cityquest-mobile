@@ -130,8 +130,7 @@ angular.module('cityquest.controllers', [])
                 }
 
             }
-        }
-
+        };
 
         $scope.download = function(image) {
             var filename = $scope.getFilenameFromString(image);
@@ -154,7 +153,7 @@ angular.module('cityquest.controllers', [])
                                     fe.remove();
                                     ft = new FileTransfer();
                                     ft.download(
-                                        encodeURI("http://cityquest.be/" + image),
+                                        /*encodeURI(*/"http://cityquest.be/" + image/*)*/,
                                         p,
                                         function(entry) {
 
@@ -214,10 +213,7 @@ angular.module('cityquest.controllers', [])
             else {
                 window.location = "#/items/" +  $scope.progress.activeItem.order;
             }
-        }
-
-
-
+        };
 
         $scope.startQuest = function(){
             if(!$scope.baseUrl){
@@ -265,7 +261,7 @@ angular.module('cityquest.controllers', [])
     })
 
 
-    .controller('CityquestItemCtrl', function ($scope, $rootScope, $stateParams, QRScanService, $ionicModal, ProgressTrackerService) {
+    .controller('CityquestItemCtrl', function ($scope, $rootScope, $stateParams, QRScanService, $ionicModal, ProgressTrackerService, $http) {
         $scope.setCompletedState = function(){
             $scope.scanSuccess = true;
             var order = parseInt ($scope.currentItem.order, 10) + 1;
@@ -290,8 +286,6 @@ angular.module('cityquest.controllers', [])
             $scope.modalTitle = title;
             $scope.modal.show();
         }
-
-
         /*$scope.getItemByValue = function (arr, value) {
             for (var i=0, iLen=arr.length; i<iLen; i++) {
                 if (arr[i].order == value) return arr[i];
@@ -316,32 +310,6 @@ angular.module('cityquest.controllers', [])
             return item;
         };
 
-        /*
-        Function to set all attributes for an item that are not provided by the API
-        @param object item
-        @return object item
-         */
-        /*$scope.setMissingAttributes = function (item) {
-            var attributes = ['crypticDescriptionItem', 'descriptionItem', 'hints', 'image', 'itemid', 'order', 'qrcode', 'title'];
-            for (var i = 0; i < attributes.length; i++) {
-                var attribute = attributes[i];
-                if (typeof (item[attributes]) == 'undefined') {
-                    if (attribute == 'hints') {
-                        item[attribute] = [];
-                    } else {
-                        item[attribute] = '';
-                    }
-                }
-            }
-            return item;
-        };*/
-
-        $scope.checkIfLastItem = function(){
-            if( typeof $scope.getItemByValue($rootScope.quest.details.items, parseInt($stateParams.itemId, 10) + 1) == 'undefined'){
-                $scope.lastItem = true;
-            }
-        };
-
         $scope.isCompleted = function(id) {
             if(id < $scope.currentItem ){
                 return true;
@@ -356,12 +324,23 @@ angular.module('cityquest.controllers', [])
         if (typeof ($rootScope.quest.details.items) == 'string') {
             $rootScope.quest.details.items = JSON.parse ($rootScope.quest.details.items);
         }
-        console.log ($rootScope.quest.details.items);
-        console.log (JSON.stringify ($rootScope.quest.details.items));
-        console.log ($stateParams.itemId);
-        $scope.currentItem = $scope.getItemByValue($rootScope.quest.details.items, $stateParams.itemId);
+        $scope.checkIfLastItem = function(){
+            console.log ('last');
+            console.log (typeof $scope.getItemByValue($rootScope.quest.details.items, parseInt($stateParams.itemId, 10) + 1));
+            if( typeof $scope.getItemByValue($rootScope.quest.details.items, parseInt($stateParams.itemId, 10) + 1) == 'undefined'){
+                $scope.lastItem = true;
+            }
+        };
 
         $scope.checkIfLastItem();
+        console.log ($scope.lastItem);
+        /*console.log ($rootScope.quest.details.items);
+        console.log (JSON.stringify ($rootScope.quest.details.items));
+        console.log ($stateParams.itemId);*/
+        $scope.currentItem = $scope.getItemByValue($rootScope.quest.details.items, $stateParams.itemId);
+
+        console.log ($scope.currentItem);
+        /* Download base64-image */
         $scope.progress.activeItem = $scope.currentItem;
 
         $scope.scanSuccess = false;
