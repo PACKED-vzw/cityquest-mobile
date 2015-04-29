@@ -1,4 +1,4 @@
-angular.module('cityquest.controllers', [])
+angular.module('cityquest.controllers', ['cityquest.services'])
 
     .controller('CityquestSettingsCtrl', function ($scope, $rootScope, $stateParams) {
         $scope.quest = $rootScope.quest;
@@ -118,7 +118,7 @@ angular.module('cityquest.controllers', [])
             }
         };
 
-        $scope.downloadAll = function(){
+        /*$scope.downloadAll = function(){
             // download everything
             $scope.download($scope.quest.details.imageFile);
             $scope.download($scope.quest.details.map.url);
@@ -153,7 +153,7 @@ angular.module('cityquest.controllers', [])
                                     fe.remove();
                                     ft = new FileTransfer();
                                     ft.download(
-                                        /*encodeURI(*/"http://cityquest.be/" + image/*)*/,
+                                        /*encodeURI(*//*"http://cityquest.be/" + image/*)*//*,
                                         p,
                                         function(entry) {
 
@@ -180,7 +180,7 @@ angular.module('cityquest.controllers', [])
             }
         }
 
-
+*/
         $scope.loadQuest = function(key){
 
             alert("One moment ... trying to load " + key);
@@ -192,7 +192,7 @@ angular.module('cityquest.controllers', [])
                 window.localStorage['quest'] = JSON.stringify(resp.data);
                 // For JSON responses, resp.data contains the result
 
-                $scope.downloadAll();
+                //$scope.downloadAll();
             }, function(err) {
                 console.error('ERR', err);
                 alert("Something went wrong. Check your key!");
@@ -261,7 +261,7 @@ angular.module('cityquest.controllers', [])
     })
 
 
-    .controller('CityquestItemCtrl', function ($scope, $rootScope, $stateParams, QRScanService, $ionicModal, ProgressTrackerService, $http) {
+    .controller('CityquestItemCtrl', function ($scope, $rootScope, $stateParams, QRScanService, $ionicModal, ProgressTrackerService, $http, ItemLoader) {
         $scope.setCompletedState = function(){
             $scope.scanSuccess = true;
             var order = parseInt ($scope.currentItem.order, 10) + 1;
@@ -299,7 +299,7 @@ angular.module('cityquest.controllers', [])
         @param string order
         @return object item
          */
-        $scope.getItemByValue = function (items, order) {
+        $scope.getItemByValue = function (items, order, quest) {
             order = parseInt (order, 10);
             for (var i = 0; i < items.length; i++) {
                 if (items[i].order == order) {

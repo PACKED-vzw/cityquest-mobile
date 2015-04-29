@@ -1,8 +1,8 @@
-angular.module('cityquest.services', [])
+angular.module('cityquest.services', ['ngResource'])
 
 
 
-    .factory('QRScanService', [function () {
+.factory('QRScanService', [function () {
 
 
         return {
@@ -17,7 +17,7 @@ angular.module('cityquest.services', [])
 
     }])
 
-    .factory('ProgressTrackerService', [function () {
+.factory('ProgressTrackerService', [function () {
 
 
         var factory = {};
@@ -38,13 +38,34 @@ angular.module('cityquest.services', [])
 
         return factory;
 
-    }]);
+    }])
 
 
-
-
-
-
-
-
-
+.factory ('Item', ['$resource',
+    function ($resource) {
+        return $resource ('http://localhost:8000/api/en/quest/:quest/item/:id', {quest: '@quest', id: '@id'});
+    }
+])
+/*
+.factory ('ItemLoader', ['$resource', '$q', '$http', function ($resource, $q, $http) {
+    var factory = {
+        query: function (id, quest) {
+            $http.get ('http://localhost:8000/api/en/quest/' + quest + '/item/' + id).
+                success (function (data, status) {
+                return data;
+            })
+        }
+    };
+    return factory;
+}]);
+*/
+.factory ('ItemLoader', function ($http) {
+    return {
+        fn: function (id, quest, callback) {
+            $http.get ("http://localhost:8000/api/en/quest/" + quest + "/item/" + id).
+            success (function (data) {
+                callback (data);
+            });
+        }
+    };
+});

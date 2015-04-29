@@ -2,7 +2,7 @@
     <content has-header="true" has-subheader="false">
         <div class="row no-padding no-margin">
             <div class="col no-padding no-margin">
-                <img id="cq-header" src="data:image/png;base64,{{currentItem.64_image}}"/>
+                <img id="cq-header" ng-src="http://cityquest.be/{{currentItem.image}}"/>
 
             </div>
         </div>
@@ -80,17 +80,13 @@
                 <div class="row">
                     <div class="col">
                         <div class="stat-item">
-                            <img class="image-hint" src="{{progress.baseUrl}}{{hint.image}}" >
+                                <img class="image-hint" ng-src="http://cityquest.be/{{hint.image}}" >
+                        </div>
+                        <div class="card">
                             <h5>{{hint.title}}</h5>
 
                             <p ng-bind-html='hint.description'></p>
                             <!--<p>{{hint.description}}</p>-->
-
-
-
-                            <p>
-
-                            </p>
                         </div>
                     </div>
                 </div>
