@@ -77,12 +77,12 @@
     </div>
         <div id="hints-container" ng-hide="scanSuccess" >
             <div class="item-hint" ng-repeat="hint in currentItem.hints" ng-show="hint{{$index+1}}">
-                <div class="row">
-                    <div class="col">
-                        <div class="stat-item">
-                                <img class="image-hint" ng-src="http://cityquest.be/{{hint.image}}" >
+                <div class="card">
+                    <div class="row">
+                        <div class="col">
+                            <img class="image-hint" ng-src="http://cityquest.be/{{hint.image}}" width="100%" >
                         </div>
-                        <div class="card">
+                        <div class="col">
                             <h5>{{hint.title}}</h5>
 
                             <p ng-bind-html='hint.description'></p>

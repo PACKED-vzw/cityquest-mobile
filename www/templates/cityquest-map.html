@@ -1,7 +1,19 @@
 <view title="'Cityquest - map'">
     <content has-header="true" has-subheader="false">
-        <img style="width:100%;" src="{{progress.baseUrl}}{{quest.details.map.url}}">
+        <div>
+            <map center="[50.838498, 4.376158]" zoom="8">
+                <directions
+                        draggable="true"
+                        travel-mode="WALKING"
+                        origin="[{{start.lat}}, {{start.long}}]"
+                        destination="[{{end.lat}}, {{end.long}}]"
+                        panel="directions-panel"
+                        ></directions>
+            </map>
+            <div id="directions-panel">
 
+            </div>
+        </div>
 
         <div class="card">
             <div class="item item-text-wrap">

@@ -22,7 +22,7 @@ function startScan() {
 
 }
 
-angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.services', 'cityquest.controllers'])
+angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.services', 'cityquest.controllers', 'ngMap'])
 
 
     .config(function ($stateProvider, $urlRouterProvider, $translateProvider) {

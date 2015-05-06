@@ -52,6 +52,14 @@ angular.module('cityquest.controllers', ['cityquest.services'])
     .controller('CityquestMapCtrl', function ($scope, $rootScope, $stateParams) {
         $scope.quest = $rootScope.quest;
         $scope.progress = $rootScope.progress;
+        $scope.start = {
+            lat: $scope.quest.details.map.startpoint.lat,
+            long: $scope.quest.details.map.startpoint.lng
+        };
+        $scope.end = {
+            lat: $scope.quest.details.map.endpoint.lat,
+            long: $scope.quest.details.map.endpoint.lng
+        };
 
 
     })
@@ -85,7 +93,7 @@ angular.module('cityquest.controllers', ['cityquest.services'])
 
     })
 
-    .controller('CityquestLoadCtrl', function ($scope, $rootScope, $stateParams, $http, $ionicLoading) {
+    .controller('CityquestLoadCtrl', function ($scope, $rootScope, $stateParams, $http, $ionicLoading, $cordovaFileTransfer) {
         $scope.init = function(){
             // check if application has already loaded quest data in this session
             if(typeof $rootScope.quest !== "undefined" ){
