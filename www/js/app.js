@@ -22,10 +22,17 @@ function startScan() {
 
 }
 
-angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.services', 'cityquest.controllers', 'ngMap'])
+angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.services', 'cityquest.controllers', 'ngMap', 'ImgCache'])
 
 
-    .config(function ($stateProvider, $urlRouterProvider, $translateProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $translateProvider, ImgCacheProvider) {
+
+        /*
+        ImgCache configuration (https://github.com/jBenes/angular-imgcache.js)
+         */
+        ImgCacheProvider.setOption ('debug', true);
+        ImgCacheProvider.setOption ('usePersistentCache', true);
+        ImgCacheProvider.manualInit = true;
 
         // Ionic uses AngularUI Router which uses the concept of states
         // Learn more here: https://github.com/angular-ui/ui-router
@@ -84,8 +91,14 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
             suffix: '.json'
         });
         $translateProvider.preferredLanguage('en_GB');
-        $translateProvider.fallbackLanguage('en_GB')
+        $translateProvider.fallbackLanguage('en_GB');
 
     })
+
+    .run (function ($ionicPlatform, ImgCache) {
+    $ionicPlatform.ready (function () {
+        ImgCache.$init ();
+    });
+})
     
     ;

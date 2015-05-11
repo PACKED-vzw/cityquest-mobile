@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="stat-item">
-                    <img src="{{progress.baseUrl}}{{it.image}}">
+                    <img img-cache ic-src="{{it.remote_image}}">
                     <p ng-bind-html='it.description | limitTo: 200' ng-hide="it.full"></p><span ng-hide="it.full">...</span>
                     <p ng-bind-html='it.description' ng-show="it.full"></p>
                     <p>

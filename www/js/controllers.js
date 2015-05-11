@@ -16,7 +16,8 @@ angular.module('cityquest.controllers', ['cityquest.services'])
     })
 
 
-    .controller('CityquestStatsCtrl', function ($scope, $rootScope, $stateParams, $ionicModal, ProgressTrackerService) {
+    .controller('CityquestStatsCtrl', function ($scope, $rootScope, $stateParams, $ionicModal, ProgressTrackerService, ImgCache) {
+        console.log ($scope.progress);
 
         $scope.convertMS = function(ms) {
             var d, h, m, s;
@@ -33,6 +34,12 @@ angular.module('cityquest.controllers', ['cityquest.services'])
         $scope.progress         = $rootScope.progress;
         $scope.quest            = $rootScope.quest;
         $scope.progress.timeEnd = Date.now();
+
+        for (var i = 0; i < $scope.progress.inventory.length; i++) {
+            ImgCache.$promise.then (function () {
+                ImgCache.cacheFile ($scope.progress.inventory[i].remote_image);
+            });
+        }
 
         $scope.progress.totalTime   = $scope.progress.timeEnd - $scope.progress.timeStart;
         $scope.progress.totalTimeHr = $scope.convertMS($scope.progress.totalTime);
@@ -93,7 +100,7 @@ angular.module('cityquest.controllers', ['cityquest.services'])
 
     })
 
-    .controller('CityquestLoadCtrl', function ($scope, $rootScope, $stateParams, $http, $ionicLoading, $cordovaFileTransfer) {
+    .controller('CityquestLoadCtrl', function ($scope, $rootScope, $stateParams, $http, $ionicLoading) {
         $scope.init = function(){
             // check if application has already loaded quest data in this session
             if(typeof $rootScope.quest !== "undefined" ){
@@ -257,10 +264,17 @@ angular.module('cityquest.controllers', ['cityquest.services'])
     })
 
 
-    .controller('CityquestIndexCtrl', function ($scope, $rootScope, $location, $state) {
+    .controller('CityquestIndexCtrl', function ($scope, $rootScope, $location, $state, ImgCache) {
         $scope.quest = $rootScope.quest;
         $scope.progress = $rootScope.progress;
 
+        /*
+        ImgCache
+        ! Attention! To allow images to be cached, use <img img-cache ic-src="foo" /> where foo is cached here
+         */
+        ImgCache.$promise.then (function () {
+           ImgCache.cacheFile ($scope.quest.details.remote_imageFile);
+        });
         // reroute to item if quest in progress
         if($scope.progress.activeItem){
             $state.go("item",{'itemId':$scope.progress.activeItem.order});
@@ -269,7 +283,7 @@ angular.module('cityquest.controllers', ['cityquest.services'])
     })
 
 
-    .controller('CityquestItemCtrl', function ($scope, $rootScope, $stateParams, QRScanService, $ionicModal, ProgressTrackerService, $http, ItemLoader) {
+    .controller('CityquestItemCtrl', function ($scope, $rootScope, $stateParams, QRScanService, $ionicModal, ProgressTrackerService, ImgCache) {
         $scope.setCompletedState = function(){
             $scope.scanSuccess = true;
             var order = parseInt ($scope.currentItem.order, 10) + 1;
@@ -348,7 +362,20 @@ angular.module('cityquest.controllers', ['cityquest.services'])
         $scope.currentItem = $scope.getItemByValue($rootScope.quest.details.items, $stateParams.itemId);
 
         console.log ($scope.currentItem);
-        /* Download base64-image */
+        /*
+        ImgCache for item
+         */
+        ImgCache.$promise.then (function () {
+            ImgCache.cacheFile ($scope.currentItem.remote_image);
+        });
+        /*
+        Cache hint images
+         */
+        for (var i = 0; i < $scope.currentItem.hints.length; i++) {
+            ImgCache.$promise.then (function () {
+                ImgCache.cacheFile ($scope.currentItem.hints[i].remote_image);
+            })
+        }
         $scope.progress.activeItem = $scope.currentItem;
 
         $scope.scanSuccess = false;

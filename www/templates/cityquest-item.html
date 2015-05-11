@@ -2,7 +2,7 @@
     <content has-header="true" has-subheader="false">
         <div class="row no-padding no-margin">
             <div class="col no-padding no-margin">
-                <img id="cq-header" ng-src="http://cityquest.be/{{currentItem.image}}"/>
+                <img id="cq-header" img-cache ic-src="{{currentItem.remote_image}}"/>
 
             </div>
         </div>
@@ -80,7 +80,7 @@
                 <div class="card">
                     <div class="row">
                         <div class="col">
-                            <img class="image-hint" ng-src="http://cityquest.be/{{hint.image}}" width="100%" >
+                            <img class="image-hint" img-cache ic-src="{{hint.remote_image}}" width="100%" >
                         </div>
                         <div class="col">
                             <h5>{{hint.title}}</h5>
