@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="be.packed.cityquest" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="be.packed.cityquest" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
   <name>CityQuest</name>
   <description>
         Athenaplus Cityquest App
@@ -8,7 +8,7 @@
         Joris Janssens
     </author>
   <content src="index.html"/>
-  <access origin="*"/>
+  <access origin="*" />
   <preference name="fullscreen" value="true"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
@@ -52,4 +52,25 @@
     <splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
     <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
+  <feature name="http://api.phonegap.com/1.0/file"/>
+  <feature name="http://api.phonegap.com/1.0/device"/>
+  <feature name="http://api.phonegap.com/1.0/network"/>
+
+    <gap:plugin name="org.apache.cordova.file" />
+    <gap:plugin name="org.apache.cordova.device" />
+    <gap:plugin name="org.apache.cordova.file-transfer" />
+
+
+  <feature name="Device">
+    <param name="ios-package" value="CDVDevice"/>
+    <param name="android-package" value="org.apache.cordova.device.Device"/>
+  </feature>
+  <feature name="File">
+    <param name="ios-package" value="CDVFile"/>
+    <param name="android-package" value="org.apache.cordova.file.FileUtils"/>
+  </feature>
+  <feature name="FileTransfer">
+    <param name="ios-package" value="CDVFileTransfer"/>
+    <param name="android-package" value="org.apache.cordova.file-transfer.FileTransfer"/>
+  </feature>
 </widget>

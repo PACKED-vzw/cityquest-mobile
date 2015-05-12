@@ -23,9 +23,7 @@
       <script src="lib/imgcache.js/js/imgcache.js"></script>
       <script src="lib/angular-imgcache.js/angular-imgcache.js"></script>
 
-    <!-- cordova script -->
-    <script src="cordova.js"></script>
-    
+
     <!-- Angular Translate -->
     <script src="lib/angular-translate/angular-translate.js"></script>
     <script src="lib/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
@@ -37,6 +35,33 @@
     <script src="js/filters.js"></script>
     <script src="js/controllers.js"></script>
       <script src="lib/ngmap/build/scripts/ng-map.min.js"></script>
+
+      <!-- cordova script -->
+      <script src="cordova.js"></script>
+      <script type="text/javascript">
+          /*(function (window, document) {
+
+              function onWindowLoad() {
+                  if (!(!window.cordova && !window.PhoneGap && !window.phonegap)) {
+                      // on device add ready listener
+                      document.addEventListener('deviceready', onDeviceReady, false);
+                  } else {
+                      // on browser trigger onDeviceReady
+                      onDeviceReady();
+                  }
+                  window.removeEventListener('load', onWindowLoad, false);
+              }
+              window.addEventListener('load', onWindowLoad, false);
+
+              function onDeviceReady() {
+                  // bootstrap app
+                  angular.element(document).ready(function () {
+                      angular.bootstrap(document, ['cityquest']);
+                  });
+                  document.removeEventListener('deviceready', onDeviceReady, false);
+              }
+          })(window, document);*/
+      </script>
   </head>
 
 
@@ -44,6 +69,7 @@
     'directory' is the name of this angular module (js/app.js) => changed to cityquest
   -->
   <body ng-app="cityquest" animation="slide-left-right-ios7">
+  <!--<body animation="slide-left-right-ios7">-->
 
     <!-- 
       The nav bar that will be updated as we navigate between views

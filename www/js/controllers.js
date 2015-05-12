@@ -271,10 +271,13 @@ angular.module('cityquest.controllers', ['cityquest.services'])
         /*
         ImgCache
         ! Attention! To allow images to be cached, use <img img-cache ic-src="foo" /> where foo is cached here
+        TODO WERKT NIET!
          */
-        ImgCache.$promise.then (function () {
-           ImgCache.cacheFile ($scope.quest.details.remote_imageFile);
-        });
+        //document.addEventListener ('ImgCacheReady', function () {
+            ImgCache.$promise.then (function () {
+                ImgCache.cacheFile ($scope.quest.details.remote_imageFile);
+            });
+        //}, false);
         // reroute to item if quest in progress
         if($scope.progress.activeItem){
             $state.go("item",{'itemId':$scope.progress.activeItem.order});

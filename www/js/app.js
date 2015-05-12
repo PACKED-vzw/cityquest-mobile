@@ -4,6 +4,11 @@ document.addEventListener("deviceready", init, false);
 function init() {
     document.querySelector("#startScan").addEventListener("touchend", startScan, false);
     resultDiv = document.querySelector("#results");
+    ImgCache.init (function () {
+        alert ('ImgCache init success!');
+    }, function () {
+        alert ('ImgCache init failed!');
+    });
 }
 
 function startScan() {
@@ -32,6 +37,7 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
          */
         ImgCacheProvider.setOption ('debug', true);
         ImgCacheProvider.setOption ('usePersistentCache', true);
+        ImgCacheProvider.setOption ('headers', { 'Connection': 'close' });
         ImgCacheProvider.manualInit = true;
 
         // Ionic uses AngularUI Router which uses the concept of states
@@ -97,7 +103,11 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
 
     .run (function ($ionicPlatform, ImgCache) {
     $ionicPlatform.ready (function () {
-        ImgCache.$init ();
+        ImgCache.$init (function () {
+            alert ('Init success!');
+        }, function () {
+            alert ('Init failed!');
+        });
     });
 })
     
