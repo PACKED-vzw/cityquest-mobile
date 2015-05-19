@@ -311,9 +311,8 @@ angular.module('cityquest.controllers', ['cityquest.services'])
         $scope.quest = $rootScope.quest;
         $scope.progress = $rootScope.progress;
         /* Force use of Cached File */
-        ImgCache.getCachedFileURL ($scope.quest.details.remote_imageFile, function (img, newPath) {
-            $scope.quest.details.cached_imageFile = newPath;
-            console.log (newPath);
+        ImgCache.$promise.then (function () {
+            ImgCache.cacheFile ($scope.quest.details.remote_imageFile);
         });
         if($scope.progress.activeItem){
             $state.go("item",{'itemId':$scope.progress.activeItem.order});
