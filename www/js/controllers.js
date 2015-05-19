@@ -1,6 +1,6 @@
 angular.module('cityquest.controllers', ['cityquest.services'])
 
-    .controller('CityquestSettingsCtrl', function ($scope, $rootScope, $stateParams) {
+    .controller('CityquestSettingsCtrl', function ($scope, $rootScope, $stateParams, ImgCache) {
         $scope.quest = $rootScope.quest;
         $scope.progress = $rootScope.progress;
 
@@ -12,6 +12,7 @@ angular.module('cityquest.controllers', ['cityquest.services'])
             localStorage.removeItem('quest');
             localStorage.removeItem('progress');
             window.location = '#/load';
+            ImgCache.clearCache ();
         };
     })
 
@@ -34,13 +35,13 @@ angular.module('cityquest.controllers', ['cityquest.services'])
         $scope.progress         = $rootScope.progress;
         $scope.quest            = $rootScope.quest;
         $scope.progress.timeEnd = Date.now();
-
+/*
         for (var i = 0; i < $scope.progress.inventory.length; i++) {
             ImgCache.$promise.then (function () {
                 ImgCache.cacheFile ($scope.progress.inventory[i].remote_image);
             });
         }
-
+*/
         $scope.progress.totalTime   = $scope.progress.timeEnd - $scope.progress.timeStart;
         $scope.progress.totalTimeHr = $scope.convertMS($scope.progress.totalTime);
 
@@ -100,7 +101,7 @@ angular.module('cityquest.controllers', ['cityquest.services'])
 
     })
 
-    .controller('CityquestLoadCtrl', function ($scope, $rootScope, $stateParams, $http, $ionicLoading) {
+    .controller('CityquestLoadCtrl', function ($scope, $rootScope, $stateParams, $http, $ionicLoading, ImgCache, $cordovaFileTransfer, $timeout) {
         $scope.init = function(){
             // check if application has already loaded quest data in this session
             if(typeof $rootScope.quest !== "undefined" ){
@@ -203,11 +204,53 @@ angular.module('cityquest.controllers', ['cityquest.services'])
                 alert('Success! Quest loaded!')
                 console.log('Success', resp);
                 $scope.quest = resp.data;
+                
+
                 // write to localstorage
-                window.localStorage['quest'] = JSON.stringify(resp.data);
                 // For JSON responses, resp.data contains the result
 
                 //$scope.downloadAll();
+                /*
+                Cache all images
+                 *//*
+                ImgCache.$promise.then (function () {
+                    ImgCache.cacheFile ($scope.quest.details.remote_imageFile);
+                });
+                if (typeof ($scope.quest.details.items) == 'string') {
+                    $scope.quest.details.items = JSON.parse ($scope.quest.details.items);
+                }
+                for (var i = 0; i < $scope.quest.details.items.length; i++) {
+                    console.log ('caching');
+                    console.log (i);
+                    //console.log ($scope.quest.details.items[i]);
+                    var item  = $scope.quest.details.items[i];
+                    $scope.i = i;
+                    console.log (item);
+                    ImgCache.$promise.then (function () {
+                        ImgCache.cacheFile ($scope.quest.details.items[$scope.i].remote_image, function () {
+                            ImgCache.getCachedFileURL ($scope.quest.details.items[$scope.i].remote_image, function (img, newPath) {
+                                $scope.quest.details.items[$scope.i].cached_image = newPath;
+                                console.log ('Cache');
+                                console.log (newPath);
+                                console.log ($scope.quest.details);
+                            }, function (img) {
+                                console.log ('Failed');
+                                console.log (img);
+                            });
+                        });
+                    });*/
+                    /* Hints */
+                    /*if (typeof ($scope.quest.details.items[i].hints) == 'string') {
+                     $scope.quest.details.items[i].hints = JSON.parse ($scope.quest.details.items[i].hints);
+                    }
+                    for (var j = 0; j < $scope.quest.details.items[i].hints.length; i++) {
+                        ImgCache.$promise.then (function (i, j) {
+                            ImgCache.cacheFile ($scope.quest.details.items[i].hints[j].remote_image);
+                        });
+                    }*/
+                //}
+                window.localStorage['quest'] = JSON.stringify($scope.quest);
+
             }, function(err) {
                 console.error('ERR', err);
                 alert("Something went wrong. Check your key!");
@@ -267,18 +310,11 @@ angular.module('cityquest.controllers', ['cityquest.services'])
     .controller('CityquestIndexCtrl', function ($scope, $rootScope, $location, $state, ImgCache) {
         $scope.quest = $rootScope.quest;
         $scope.progress = $rootScope.progress;
-
-        /*
-        ImgCache
-        ! Attention! To allow images to be cached, use <img img-cache ic-src="foo" /> where foo is cached here
-        TODO WERKT NIET!
-         */
-        //document.addEventListener ('ImgCacheReady', function () {
-            ImgCache.$promise.then (function () {
-                ImgCache.cacheFile ($scope.quest.details.remote_imageFile);
-            });
-        //}, false);
-        // reroute to item if quest in progress
+        /* Force use of Cached File */
+        ImgCache.getCachedFileURL ($scope.quest.details.remote_imageFile, function (img, newPath) {
+            $scope.quest.details.cached_imageFile = newPath;
+            console.log (newPath);
+        });
         if($scope.progress.activeItem){
             $state.go("item",{'itemId':$scope.progress.activeItem.order});
         }
@@ -363,22 +399,17 @@ angular.module('cityquest.controllers', ['cityquest.services'])
         console.log (JSON.stringify ($rootScope.quest.details.items));
         console.log ($stateParams.itemId);*/
         $scope.currentItem = $scope.getItemByValue($rootScope.quest.details.items, $stateParams.itemId);
-
-        console.log ($scope.currentItem);
         /*
-        ImgCache for item
+         ImgCache for hints
          */
-        ImgCache.$promise.then (function () {
-            ImgCache.cacheFile ($scope.currentItem.remote_image);
-        });
-        /*
-        Cache hint images
-         */
+        var hints = Array ();
         for (var i = 0; i < $scope.currentItem.hints.length; i++) {
-            ImgCache.$promise.then (function () {
-                ImgCache.cacheFile ($scope.currentItem.hints[i].remote_image);
-            })
+            ImgCache.getCachedFileURL ($scope.currentItem.hints[i].remote_image, function (img, newPath) {
+                $scope.currentItem.hints[i].cached_image = newPath;
+            });
         }
+        console.log ('Current');
+        console.log ($scope.currentItem);
         $scope.progress.activeItem = $scope.currentItem;
 
         $scope.scanSuccess = false;
@@ -491,8 +522,6 @@ angular.module('cityquest.controllers', ['cityquest.services'])
         $rootScope.progress = $scope.progress;
         window.localStorage['quest'] = JSON.stringify($scope.quest);
         window.localStorage['progress'] = JSON.stringify($scope.progress);
-
-
     });
 
 
