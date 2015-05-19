@@ -402,11 +402,14 @@ angular.module('cityquest.controllers', ['cityquest.services'])
         /*
          ImgCache for hints
          */
+        ImgCache.$promise.then (function () {
+            ImgCache.cacheFile ($scope.currentItem.remote_image);
+        });
         var hints = Array ();
         for (var i = 0; i < $scope.currentItem.hints.length; i++) {
             ImgCache.$promise.then (function (i) {
                 ImgCache.cacheFile ($scope.currentItem.hints[i].remote_image);
-            })
+            });
         }
         console.log ('Current');
         console.log ($scope.currentItem);
