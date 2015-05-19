@@ -375,7 +375,7 @@ angular.module('cityquest.controllers', ['cityquest.services'])
         Cache hint images
          */
         for (var i = 0; i < $scope.currentItem.hints.length; i++) {
-            ImgCache.$promise.then (function () {
+            ImgCache.$promise.then (function (i) {
                 ImgCache.cacheFile ($scope.currentItem.hints[i].remote_image);
             })
         }
