@@ -27,10 +27,10 @@ function startScan() {
 
 }
 
-angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.services', 'cityquest.controllers', 'ngMap', 'ImgCache'])
+angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.services', 'cityquest.controllers', 'ngMap', 'ImgCache', 'ngCordova'])
 
 
-    .config(function ($stateProvider, $urlRouterProvider, $translateProvider, ImgCacheProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $translateProvider, ImgCacheProvider, $compileProvider) {
 
         /*
         ImgCache configuration (https://github.com/jBenes/angular-imgcache.js)
@@ -39,6 +39,7 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
         ImgCacheProvider.setOption ('usePersistentCache', true);
         ImgCacheProvider.setOption ('headers', { 'Connection': 'close' });
         ImgCacheProvider.manualInit = true;
+        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|filesystem):/);
 
         // Ionic uses AngularUI Router which uses the concept of states
         // Learn more here: https://github.com/angular-ui/ui-router
