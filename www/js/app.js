@@ -39,7 +39,7 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
         ImgCacheProvider.setOption ('usePersistentCache', true);
         ImgCacheProvider.setOption ('headers', { 'Connection': 'close' });
         ImgCacheProvider.manualInit = true;
-        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|filesystem):/);
+        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|filesystem|file):/);
 
         // Ionic uses AngularUI Router which uses the concept of states
         // Learn more here: https://github.com/angular-ui/ui-router
@@ -87,11 +87,43 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
                 url: '/load',
                 templateUrl: 'templates/load-quest.html',
                 controller: 'CityquestLoadCtrl'
-            });
+            }).state ('loadDebug', {
+                url: '/_loadDebug/:key',
+                templateUrl: 'templates/load-quest2.html',
+                controller: 'CityquestLoadDebugCtrl',
+                resolve: {
+                    quest: ['$http', '$stateParams', function ($http, $stateParams) {
+                        /* Get the quest. The quest can be stored in localstorage, if not, get from remote */
+                        if (localStorage.getItem ('quest') !== null) {
+                            /* Load quest from LocalStorage */
+                            console.log ('local');
+                            var localQuest = JSON.parse (window.localStorage['quest']);
+                            if (localQuest.details.publishkey != $stateParams.key) {
+                                console.log ('remote_after_local');
+                                return $http.get ('http://cityquest.be/en/api/key/' + $stateParams.key).then (function (data) {
+                                    return data.data;
+                                });
+                            } else {
+                                return localQuest;
+                            }
+                        } else {
+                            console.log ('remote');
+                            return $http.get ('http://cityquest.be/en/api/key/' + $stateParams.key).then (function (data) {
+                                return data.data;
+                            });
+                        }
+                    }],
+                    progress: function () {
+                        if (localStorage.getItem ('progress') !== null) {
+                            return JSON.parse (window.localStorage['progress']);
+                        }
+                    }
+                }
+        });
 
 
         // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/load');
+        $urlRouterProvider.otherwise('/_loadDebug/rucayabani');
 
         $translateProvider.useStaticFilesLoader ({
             prefix: 'lang/',

@@ -1,4 +1,4 @@
-angular.module('cityquest.controllers', ['cityquest.services'])
+angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
 
     .controller('CityquestSettingsCtrl', function ($scope, $rootScope, $stateParams, ImgCache) {
         $scope.quest = $rootScope.quest;
@@ -100,8 +100,83 @@ angular.module('cityquest.controllers', ['cityquest.services'])
         $scope.progress.totalTimeHr = $scope.convertMS($scope.progress.totalTime);
 
     })
+    .controller ('CityquestLoadDebugCtrl',
+    function ($scope, quest, progress, $cordovaFileTransfer, $ionicPlatform, $timeout, $cordovaFile) {
+        $scope.images_downloaded = false;
+        /* Image downloader */
+        $scope.downloadImages = function () {
+            //console.log ($scope.quest.details.items);
+            for (var i = 0; i < $scope.quest.details.items.length; i++) {
+                console.log ('item' + i);
+                var target = cordova.file.dataDirectory + $scope.quest.details.items[i].itemid;
+                var source = $scope.quest.details.items[i].remote_image;
+                $cordovaFileTransfer.download (source, target, {}, true)
+                    .then (function (result) {
+                        console.log ('download');
+                    }, function (error) {
+                        console.log ('error');
+                    }, function (progressed) {
+                        $timeout (function () {
+                            console.log ('wait');
+                            $scope.downloadProgress = (progressed.loaded / progressed.total) * 100;
+                        })
+                    })
+            }
+        };
 
-    .controller('CityquestLoadCtrl', function ($scope, $rootScope, $stateParams, $http, $ionicLoading, ImgCache, $cordovaFileTransfer, $timeout) {
+        /* Check if the items array is already parsed */
+        if (typeof (quest.details.items) == 'string') {
+            quest.details.items = JSON.parse (quest.details.items);
+        }
+        $scope.quest = quest;
+        $scope.progress = progress;
+        /* Download the images for the Quest */
+        $ionicPlatform.ready (function () {
+            console.log ('ready');
+            $scope.downloadImages ();
+            $scope.images_downloaded = true;
+        });
+        /* If images_downloaded is true, redirect */
+        $scope.$watch ('images_downloaded', function (newValue) {
+            if (newValue == true) {
+                $scope.ff = cordova.file.dataDirectory + $scope.quest.details.items[0].itemid;
+            }
+            window.location = "#/load";
+        });
+        /*
+        $scope.$watch ('quest', function (newValue) {
+            if (typeof (newValue.details.items) != 'undefined') {
+                console.log ('wait_for_ready');
+                $ionicPlatform.ready(function() {
+                    console.log ('watch');
+
+                    if (typeof ($scope.quest.details.items) == 'string') {
+                        $scope.quest.details.items = JSON.parse ($scope.quest.details.items);
+                    }
+                    for (var i = 0; i < $scope.quest.details.items.length; i++) {
+                        var target = $cordovaFile.files + $scope.quest.details.items[i].itemid;
+                        var source = $scope.quest.details.items[i].remote_image;
+                        $cordovaFileTransfer.download (source, target, {}, true)
+                            .then (function (result) {
+
+                                console.log ('success:' + $scope.quest.details.items[i].itemid);
+                            }, function (error) {
+                                console.log (error);
+                            }, function (progressed) {
+                                $timeout (function () {
+                                    console.log ('wait:' + $scope.quest.details.items[i].itemid);
+                                    $scope.downloadProgress = (progressed.loaded / progressed.total) * 100;
+                                })
+                            }
+                        )
+                    }
+                });
+            }
+        });*/
+    })
+    .controller('CityquestLoadCtrl', function ($scope, $rootScope, $stateParams, $http, $ionicLoading, ImgCache, $cordovaFileTransfer, $timeout, $cordovaFile, $ionicPlatform) {
+        /*$scope.downloaded = false;
+        //$scope.quest = {};*/
         $scope.init = function(){
             // check if application has already loaded quest data in this session
             if(typeof $rootScope.quest !== "undefined" ){
@@ -126,14 +201,14 @@ angular.module('cityquest.controllers', ['cityquest.services'])
         };
         $scope.init();
 
-
+/*
         $scope.getFilenameFromString = function(image){
             if(typeof image !== "undefined"){
                 var filename = image.split("/");
                 return filename[1];
             }
         };
-
+           */
         /*$scope.downloadAll = function(){
             // download everything
             $scope.download($scope.quest.details.imageFile);
@@ -201,10 +276,9 @@ angular.module('cityquest.controllers', ['cityquest.services'])
 
             alert("One moment ... trying to load " + key);
             $http.get('http://cityquest.be/en/api/key/' + key).then(function(resp) {
-                alert('Success! Quest loaded!')
+                alert('Success! Quest loaded!');
                 console.log('Success', resp);
                 $scope.quest = resp.data;
-                
 
                 // write to localstorage
                 // For JSON responses, resp.data contains the result
@@ -255,10 +329,9 @@ angular.module('cityquest.controllers', ['cityquest.services'])
                 console.error('ERR', err);
                 alert("Something went wrong. Check your key!");
                 // err.status will contain the status code
-            })
+            });
 
-        }
-
+        };
 
         $scope.resumeQuest = function(){
             $rootScope.progress = $scope.progress;
