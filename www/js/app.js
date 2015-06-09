@@ -82,15 +82,26 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
                 templateUrl: 'templates/cityquest-map.html',
                 controller: 'CityquestMapCtrl'
             })
-
+            .state ('splash', {
+                /* Splash state; controller decides whether to ask for a new quest (/load) or (re)start an existing one (/landing) */
+                url: '/splash',
+                templateUrl: 'templates/cityquest-loading.html',
+                controller: 'CityquestSplashCtrl'
+            })
             .state('load', {
                 url: '/load',
                 templateUrl: 'templates/load-quest.html',
                 controller: 'CityquestLoadCtrl'
-            }).state ('loadDebug', {
-                url: '/_loadDebug/:key',
-                templateUrl: 'templates/load-quest2.html',
-                controller: 'CityquestLoadDebugCtrl',
+            })
+            .state ('landing', {
+                url: '/landing',
+                templateUrl: 'templates/cityquest-landing.html',
+                controller: 'CityquestLandingCtrl'
+            })
+            .state ('fetch', {
+                url: '/fetch/:key',
+                templateUrl: 'templates/cityquest-loading.html',
+                controller: 'CityquestFetchCtrl',
                 resolve: {
                     quest: ['$http', '$stateParams', function ($http, $stateParams) {
                         /* Get the quest. The quest can be stored in localstorage, if not, get from remote */
@@ -123,7 +134,7 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
 
 
         // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/_loadDebug/rucayabani');
+        $urlRouterProvider.otherwise('/splash');
 
         $translateProvider.useStaticFilesLoader ({
             prefix: 'lang/',

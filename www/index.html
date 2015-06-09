@@ -40,28 +40,6 @@
       <!-- cordova script -->
       <script src="cordova.js"></script>
       <script type="text/javascript">
-          /*(function (window, document) {
-
-              function onWindowLoad() {
-                  if (!(!window.cordova && !window.PhoneGap && !window.phonegap)) {
-                      // on device add ready listener
-                      document.addEventListener('deviceready', onDeviceReady, false);
-                  } else {
-                      // on browser trigger onDeviceReady
-                      onDeviceReady();
-                  }
-                  window.removeEventListener('load', onWindowLoad, false);
-              }
-              window.addEventListener('load', onWindowLoad, false);
-
-              function onDeviceReady() {
-                  // bootstrap app
-                  angular.element(document).ready(function () {
-                      angular.bootstrap(document, ['cityquest']);
-                  });
-                  document.removeEventListener('deviceready', onDeviceReady, false);
-              }
-          })(window, document);*/
       </script>
   </head>
 
@@ -104,7 +82,7 @@
                     </a>
                     -->
 
-                    <a class="tab-item {{menuHomeActive}}" href="#/cityquest" ng-show="menu">
+                    <a class="tab-item {{menuHomeActive}}" href="#/splash" ng-show="menu">
                         <i class="icon ion-home"></i>
                     </a>
 

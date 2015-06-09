@@ -1,13 +1,15 @@
 <view title="'Cityquest - load quest'">
-    <content has-header="true" has-subheader="false" ng-controller="CityquestLoadCtrl">
+    <content has-header="true" has-subheader="false">
         <div class="row">
             <div class="col">
                 <div class="list card">
                     <div class="item">
                         <img class="center" id="load-logo" src="img/logo_LANDING.png">
 
-
-                        <div ng-hide="quest">
+                        <div ng-show="loading">
+                            <img ng-src="img/Vector_Loading_fallback.gif" alt="Loading" class="center" />
+                        </div>
+                        <div ng-hide="loading">
                             <div class="item item-text-wrap">
                                 <span class="cq-notification">
                                     <p>{{ 'load-notification-1' | translate }}</p>
@@ -17,13 +19,13 @@
                                 </span>
                             </div>
 
-                            <div class="list">
+                            <div class="list" >
 
                                 <label class="item item-input">
                                     <input type="text" placeholder="Quest key" ng-model="key">
                                 </label>
                             </div>
-                            <a class="button button-full button-assertive" ng-click="loadQuest(key)">
+                            <a class="button button-full button-assertive" ng-click="loadQuest(key);load()">
                                 {{ 'load-button-load' | translate }}
                             </a>
 
@@ -32,43 +34,6 @@
 
                         <div>
                             <div class="item item-text-wrap">
-
-                                <button ng-show="quest" class="button button-full button-positive button-assertive" ng-click="startQuest()">
-                                    {{ 'load-button-start' | translate }}
-                                </button>
-
-                                <button ng-show="progress" class="button button-full button-positive button-assertive" ng-click="resumeQuest()">
-                                    {{ 'load-button-resume' | translate }}
-                                </button>
-
-
-
-                                <div ng-show="debug">
-                                    <button ng-show="progress" class="button button-full button-positive button-assertive" ng-click="downloadAll()">
-                                        {{ 'load-button-image' | translate }}
-                                    </button>
-
-
-                                    {{quest.details.imageFile}}
-                                    {{imageDing}}
-                                    {{ 'load-img-1' | translate }}
-                                    <img src="{{quest.details.imageFile}}">
-                                    {{ 'load-img-2' | translate }}
-                                    <img src="{{quest.details.imageFile}}">
-                                    {{ 'load-img-3' | translate }}
-                                    <img src={{quest.details.imageFile}}">
-                                    {{ 'load-img-4' | translate }}
-                                    <img src="{{quest.details.imageFile}}">
-                                    {{ 'load-img-5' | translate }}
-                                    <img src="{{quest.details.imageFile}}">
-                                    {{ 'load-img-6' | translate }}
-                                    <img src="{{imgFile}}">
-                                    <img ng-src="{{imgFile}}">
-
-
-                                </div>
-
-
                                 <div class="image-bar">
                                     <img src="img/packed_logo.png" alt="logo PACKED vzw">
                                     <img src="img/athena_logo.png" alt="AthenaPlus logo">
