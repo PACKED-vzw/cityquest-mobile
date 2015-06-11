@@ -120,7 +120,7 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
     /*
      Controller that allows the user to enter a key in the form and redirects to the fetching controller, responsible for downloading the quest
      */
-    .controller('CityquestLoadCtrl', function ($scope) {
+    .controller('CityquestLoadCtrl', function ($scope, $http) {
         $scope.loading = false;
         $scope.load = function () {
         };
@@ -130,8 +130,18 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
                 alert ("Error: your key must not be empty");
                 $scope.loading = false;
             } else {
-                $scope.loading = true;
-                window.location = '#/fetch/' + key;
+                /* GET to see if item exists */
+                $http.get ('http://cityquest.be/en/api/key/' + key).
+                    success (function (data, status) {
+                    // Continue
+                    $scope.loading = true;
+                    window.location = '#/fetch/' + key;
+                }).
+                    error (function (data, status) {
+                    // Error
+                    alert ("Error: this quest does not seem to exist. Perhaps your key is wrong or the quest is not yet published.");
+                    $scope.loading = false;
+                });
             }
         };
     })
