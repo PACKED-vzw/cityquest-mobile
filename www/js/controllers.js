@@ -112,8 +112,8 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
                 if (typeof ($scope.progress) != 'undefined' && $scope.progress != null) {
                     localStorage.setItem ('progress', JSON.stringify ($scope.progress));
                 }
+                window.location = "#/landing";
             }
-            window.location = "#/landing";
         });
     })
 
@@ -285,16 +285,13 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
     /*
     Controller for the map
      */
-    .controller('CityquestMapCtrl', function ($scope, $rootScope, $cordovaNetwork, $ionicPlatform) {
+    .controller('CityquestMapCtrl', function ($scope, $rootScope, $http) {
         /* Check whether we are offline; default is true; if we are online, use Google maps */
         $scope.online = false;
-        $ionicPlatform.ready (function () {
-            $rootScope.$on ('$cordovaNetwork:online', function () {
-                $scope.online = true;
-            });
-            $rootScope.$on ('$cordovaNetwork:offline', function () {
-                $scope.online = false;
-            });
+        /* Ugly, but works */
+        $http.get ('http://cityquest.be').
+            success (function () {
+            $scope.online = true;
         });
         /* Map */
         $scope.quest = $rootScope.quest;
