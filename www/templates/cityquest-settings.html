@@ -101,6 +101,13 @@
         <div class="row">
             <div class="col">
                 <div class="card">
+                    <div class="item" ng-show="resetting">
+                        <h2>{{ 'resetting-current' | translate }}</h2>
+                        <img ng-src="img/Vector_Loading_fallback.gif" alt="Resetting" class="center" />
+                        <div ng-show="errormsg">
+                            {{errormsg}}
+                        </div>
+                    </div>
                     <div class="item item-text-wrap">
                         <button ng-show="quest" class="button button-full button-assertive" ng-click="resetQuest()">
                             {{ 'settings-button-reset' | translate }}

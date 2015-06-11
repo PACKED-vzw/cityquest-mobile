@@ -1,8 +1,10 @@
 angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
 
+    /*
+    Controller that either forwards us to a load_new controller, or load_existing
+    */
     .controller ('CityquestSplashCtrl',
     function ($scope, $rootScope) {
-        /* Controller that either forwards us to a load_new controller, or load_existing */
         if (localStorage.getItem ('quest') !== null) {
             /* Load existing */
             $scope.quest = JSON.parse (localStorage.getItem ('quest'));
@@ -14,62 +16,81 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
         }
     })
 
-
+    /*
+    Controller that fetches the quest data
+    */
     .controller ('CityquestFetchCtrl',
-    function ($scope, quest, progress, $cordovaFileTransfer, $ionicPlatform, $timeout) {
-        /* Controller that fetches the quest data */
+    function ($scope, quest, progress, $cordovaFileTransfer, $ionicPlatform, $timeout, $cordovaFile) {
         $scope.images_downloaded = false;
         $scope.errormsg = null;
         /* Image downloader */
         $scope.downloadImages = function () {
+            /* Create directory */
+            $scope.quest.image_dir = cordova.file.dataDirectory + 'cityquest/' + $scope.quest.details.id.toString () + '/';
+            $cordovaFile.checkDir (cordova.file.dataDirectory + 'cityquest', $scope.quest.details.id.toString ())
+                .then (function (success) {
+
+            }, function (error) {
+                $cordovaFile.createDir (cordova.file.dataDirectory + 'cityquest', $scope.quest.details.id.toString (), false)
+                    .then (function (success) {
+                }, function (error) {
+                    $scope.errormsg = JSON.stringify (error);
+                })
+            });
             /* Cache header image */
-            var target = cordova.file.dataDirectory + $scope.quest.details.id;
+            var target = $scope.quest.image_dir + $scope.quest.details.id.toString ();
             var source = $scope.quest.details.remote_imageFile;
             $cordovaFileTransfer.download (source, target, {}, true)
                 .then (function (result) {
-                console.log ('qdownload');
             }, function (error) {
                 $scope.errormsg = JSON.stringify (error);
             }, function (progressed) {
                 $timeout (function () {
-                    console.log ('qwait');
                     $scope.downloadProgress = (progressed.loaded / progressed.total) * 100;
                 })
             });
             /* Cache items */
             for (var i = 0; i < $scope.quest.details.items.length; i++) {
-                console.log ('item' + i);
-                target = cordova.file.dataDirectory + $scope.quest.details.id + '.' + $scope.quest.details.items[i].itemid;
+                target = $scope.quest.image_dir + $scope.quest.details.id.toString () + '.' + $scope.quest.details.items[i].itemid;
                 source = $scope.quest.details.items[i].remote_image;
                 $cordovaFileTransfer.download (source, target, {}, true)
                     .then (function (result) {
-                    console.log ('download');
                 }, function (error) {
                     $scope.errormsg = JSON.stringify (error);
                 }, function (progressed) {
                     $timeout (function () {
-                        console.log ('wait');
                         $scope.downloadProgress = (progressed.loaded / progressed.total) * 100;
                     })
                 });
                 /* Cache hints */
                 if (typeof ($scope.quest.details.items[i].hints) != 'undefined') {
                     for (var j = 0; j < $scope.quest.details.items[i].hints.length; j++) {
-                        console.log ('hint' + j);
-                        target = cordova.file.dataDirectory + $scope.quest.details.id + '.' + $scope.quest.details.items[i].hints[j].hint_id;
+                        target = $scope.quest.image_dir + $scope.quest.details.id.toString () + '.' + $scope.quest.details.items[i].hints[j].hint_id;
                         source = $scope.quest.details.items[i].hints[j].remote_image;
                         $cordovaFileTransfer.download (source, target, {}, true)
                             .then (function (result) {
-                            console.log ('hdownload');
                         }, function (error) {
                             $scope.errormsg = JSON.stringify (error);
                         }, function (progressed) {
-                            console.log ('hwait');
                             $scope.hdownloadProgress = (progressed.loaded / progressed.total) * 100;
                         })
                     }
                 }
             }
+            /* Cache map */
+            target = $scope.quest.image_dir + "map" + $scope.quest.details.id.toString ();
+            console.log (target);
+            source = 'http://cityquest.be/' + $scope.quest.details.map.url;
+            $cordovaFileTransfer.download (source, target, {}, true)
+                .then (function (result) {
+            }, function (error) {
+                $scope.errormsg = JSON.stringify (error);
+            }, function (progressed) {
+                $timeout (function () {
+                    $scope.downloadProgress = (progressed.loaded / progressed.total) * 100;
+                })
+            });
+            console.log ($scope.errormsg);
         };
 
         /* Check if the items array is already parsed */
@@ -80,8 +101,7 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
         $scope.progress = progress;
         /* Download the images for the Quest */
         $ionicPlatform.ready (function () {
-            console.log ('ready');
-            //$scope.downloadImages ();
+            $scope.downloadImages ();
             $scope.images_downloaded = true;
         });
         /* If images_downloaded is true, redirect */
@@ -97,15 +117,17 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
         });
     })
 
+    /*
+     Controller that allows the user to enter a key in the form and redirects to the fetching controller, responsible for downloading the quest
+     */
     .controller('CityquestLoadCtrl', function ($scope) {
-        /* Controller that allows the user to enter a key in the form and redirects to the fetching controller, responsible for downloading the quest */
         $scope.loading = false;
         $scope.load = function () {
         };
         $scope.loadQuest = function (key){
             window.alert ('Loading quest ...');
             if (key == "" || key == null) {
-                alert ("Error: your key may not be empty");
+                alert ("Error: your key must not be empty");
                 $scope.loading = false;
             } else {
                 $scope.loading = true;
@@ -114,11 +136,11 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
         };
     })
 
-
-
+    /*
+     Controller that presents a start screen where the user may start the quest anew or continue
+     */
     .controller ('CityquestLandingCtrl',
     function ($scope, $rootScope) {
-        /* Controller that presents a start screen where the user may start the quest anew or continue */
         $scope.init = function (){
             // check if application has already loaded quest data in this session
             if (typeof $rootScope.quest !== "undefined" ){
@@ -185,19 +207,27 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
         $rootScope.progress = $scope.progress;
     })
 
-    .controller('CityquestSettingsCtrl', function ($scope, $rootScope, $stateParams, ImgCache) {
+    .controller('CityquestSettingsCtrl', function ($scope, $rootScope, $cordovaFile) {
         $scope.quest = $rootScope.quest;
         $scope.progress = $rootScope.progress;
-
+        $scope.resetting = false;
         $scope.resetQuest = function(){
-            delete $scope.quest;
+            $scope.resetting = true;
+            localStorage.removeItem('quest');
+            localStorage.removeItem('progress');
             delete $scope.progress;
             delete $rootScope.quest;
             delete $rootScope.progress;
-            localStorage.removeItem('quest');
-            localStorage.removeItem('progress');
-            window.location = '#/load';
-            ImgCache.clearCache ();
+            $cordovaFile.removeRecursively (cordova.file.dataDirectory + 'cityquest', $scope.quest.details.id.toString ())
+                .then (function (success) {
+                delete $scope.quest;
+                $scope.resetting = false;
+                window.location = '#/load';
+            }, function (error) {
+                $scope.errormsg = JSON.stringify (error);
+                console.log (error);
+                alert ($scope.errormsg);
+            })
         };
     })
 
@@ -242,7 +272,21 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
 
     })
 
-    .controller('CityquestMapCtrl', function ($scope, $rootScope, $stateParams) {
+    /*
+    Controller for the map
+     */
+    .controller('CityquestMapCtrl', function ($scope, $rootScope, $cordovaNetwork, $ionicPlatform) {
+        /* Check whether we are offline; default is true; if we are online, use Google maps */
+        $scope.online = false;
+        $ionicPlatform.ready (function () {
+            $rootScope.$on ('$cordovaNetwork:online', function () {
+                $scope.online = true;
+            });
+            $rootScope.$on ('$cordovaNetwork:offline', function () {
+                $scope.online = false;
+            });
+        });
+        /* Map */
         $scope.quest = $rootScope.quest;
         $scope.progress = $rootScope.progress;
         $scope.start = {
@@ -253,8 +297,7 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
             lat: $scope.quest.details.map.endpoint.lat,
             long: $scope.quest.details.map.endpoint.lng
         };
-
-
+        $scope.cached_map = $scope.quest.image_dir + "map" + $scope.quest.details.id.toString ();
     })
 
     .controller('CityquestInventoryCtrl', function ($scope, $rootScope, $stateParams) {
@@ -289,7 +332,7 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
     .controller('CityquestIndexCtrl', function ($scope, $rootScope, $location, $state, ImgCache) {
         $scope.quest = $rootScope.quest;
         $scope.progress = $rootScope.progress;
-        /* Force use of Cached File */
+        $scope.quest.details.cached_image = $scope.quest.image_dir + $scope.quest.details.id;
         if($scope.progress.activeItem){
             $state.go("item",{'itemId':$scope.progress.activeItem.order});
         }
@@ -355,31 +398,26 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
 
 
         $scope.quest = $rootScope.quest;
-        console.log ($scope.quest);
         $scope.progress = $rootScope.progress;
         if (typeof ($rootScope.quest.details.items) == 'string') {
             $rootScope.quest.details.items = JSON.parse ($rootScope.quest.details.items);
         }
         $scope.checkIfLastItem = function(){
-            console.log ('last');
-            console.log (typeof $scope.getItemByValue($rootScope.quest.details.items, parseInt($stateParams.itemId, 10) + 1));
             if( typeof $scope.getItemByValue($rootScope.quest.details.items, parseInt($stateParams.itemId, 10) + 1) == 'undefined'){
                 $scope.lastItem = true;
             }
         };
 
         $scope.checkIfLastItem();
-        console.log ($scope.lastItem);
+
 
         /* Cache image */
         $scope.currentItem = $scope.getItemByValue($rootScope.quest.details.items, $stateParams.itemId);
-        $scope.currentItem.cached_image = cordova.file.dataDirectory + $scope.quest.details.id + '.' + $scope.currentItem.itemid;
+        $scope.currentItem.cached_image = $scope.quest.image_dir + $scope.quest.details.id + '.' + $scope.currentItem.itemid;
         $scope.cacheHint = function (hint) {
-            return cordova.file.dataDirectory + $scope.quest.details.id + '.' + hint.hint_id;
+            return $scope.quest.image_dir + $scope.quest.details.id + '.' + hint.hint_id;
         };
 
-        console.log ('Current');
-        console.log ($scope.currentItem);
         $scope.progress.activeItem = $scope.currentItem;
 
         $scope.scanSuccess = false;

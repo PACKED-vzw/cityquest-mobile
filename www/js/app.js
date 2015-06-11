@@ -4,11 +4,6 @@ document.addEventListener("deviceready", init, false);
 function init() {
     document.querySelector("#startScan").addEventListener("touchend", startScan, false);
     resultDiv = document.querySelector("#results");
-    ImgCache.init (function () {
-        alert ('ImgCache init success!');
-    }, function () {
-        alert ('ImgCache init failed!');
-    });
 }
 
 function startScan() {
@@ -151,15 +146,21 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
         $translateProvider.fallbackLanguage('en_GB');
 
     })
-
-    .run (function ($ionicPlatform, ImgCache) {
-    $ionicPlatform.ready (function () {
-        ImgCache.$init (function () {
-            alert ('Init success!');
-        }, function () {
-            alert ('Init failed!');
-        });
-    });
-})
-    
+/*
+    .run (['$window', '$rootScope',
+    function ($window, $rootScope) {
+        // Check for offline-online - see http://stackoverflow.com/questions/16242389/how-to-check-internet-connection-in-angularjs /
+        $rootScope.online = navigator.onLine;
+        $window.addEventListener ("offline", function () {
+            $rootScope.$apply (function () {
+                $rootScope.online = false;
+            });
+        }, false);
+        $window.addEventListener ("online", function () {
+            $rootScope.$apply (function () {
+                $rootScope.online = true;
+            });
+        }, false);
+}])
+    */
     ;

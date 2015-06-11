@@ -1,6 +1,6 @@
 <view title="'Cityquest - map'">
     <content has-header="true" has-subheader="false">
-        <div>
+        <div ng-show="online">
             <map center="[50.838498, 4.376158]" zoom="8">
                 <directions
                         draggable="true"
@@ -13,6 +13,9 @@
             <div id="directions-panel">
 
             </div>
+        </div>
+        <div ng-hide="online">
+            <img ng-src="{{cached_map}}" alt="Overview map" />
         </div>
 
         <div class="card">
