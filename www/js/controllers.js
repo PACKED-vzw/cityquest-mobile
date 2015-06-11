@@ -120,7 +120,7 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
     /*
      Controller that allows the user to enter a key in the form and redirects to the fetching controller, responsible for downloading the quest
      */
-    .controller('CityquestLoadCtrl', function ($scope, $http) {
+    .controller('CityquestLoadCtrl', function ($scope, $http, cityquestProvider) {
         $scope.loading = false;
         $scope.load = function () {
         };
@@ -131,7 +131,7 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
                 $scope.loading = false;
             } else {
                 /* GET to see if item exists */
-                $http.get ('http://cityquest.be/en/api/key/' + key).
+                $http.get (cityquestProvider.url +  '/en/api/key/' + key).
                     success (function (data, status) {
                     // Continue
                     $scope.loading = true;
@@ -285,11 +285,11 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
     /*
     Controller for the map
      */
-    .controller('CityquestMapCtrl', function ($scope, $rootScope, $http) {
+    .controller('CityquestMapCtrl', function ($scope, $rootScope, $http, cityquestProvider) {
         /* Check whether we are offline; default is true; if we are online, use Google maps */
         $scope.online = false;
         /* Ugly, but works */
-        $http.get ('http://cityquest.be').
+        $http.get (cityquestProvider.url).
             success (function () {
             $scope.online = true;
         });

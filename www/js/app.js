@@ -25,7 +25,7 @@ function startScan() {
 angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.services', 'cityquest.controllers', 'ngMap', 'ImgCache', 'ngCordova'])
 
 
-    .config(function ($stateProvider, $urlRouterProvider, $translateProvider, ImgCacheProvider, $compileProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $translateProvider, ImgCacheProvider, $compileProvider, cityquestProvider) {
 
         /*
         ImgCache configuration (https://github.com/jBenes/angular-imgcache.js)
@@ -106,7 +106,7 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
                             var localQuest = JSON.parse (window.localStorage['quest']);
                             if (localQuest.details.publishkey != $stateParams.key) {
                                 console.log ('remote_after_local');
-                                return $http.get ('http://cityquest.be/en/api/key/' + $stateParams.key).then (function (data) {
+                                return $http.get (cityquestProvider.url + '/en/api/key/' + $stateParams.key).then (function (data) {
                                     return data.data;
                                 });
                             } else {
@@ -114,7 +114,7 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
                             }
                         } else {
                             console.log ('remote');
-                            return $http.get ('http://cityquest.be/en/api/key/' + $stateParams.key).then (function (data) {
+                            return $http.get (cityquestProvider.url + '/en/api/key/' + $stateParams.key).then (function (data) {
                                 return data.data;
                             });
                         }
@@ -146,6 +146,12 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
         $translateProvider.fallbackLanguage('en_GB');
 
     })
+
+    /* Provider URL */
+    /*http://stackoverflow.com/questions/17456989/storing-application-configuration-settings-in-angularjs*/
+    .constant ('cityquestProvider', {
+    url: 'http://cityquest.be'
+})
 /*
     .run (['$window', '$rootScope',
     function ($window, $rootScope) {
