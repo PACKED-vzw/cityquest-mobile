@@ -184,6 +184,10 @@ h3 {
     margin-right: 20px;
 }
 
+div.icon-help-text {
+    float: right;
+}
+
 .item-help, .item-help p {
     color: #111d4a;
 }
@@ -194,7 +198,7 @@ h3 {
 ol.majortrckr {
     margin: 0 auto;
     padding: 0;
-    list-style-type none;
+    list-style-type: none;
     width:70%;
     margin-bottom: 50px;
 }
@@ -386,4 +390,8 @@ p.stat-legend {
 
 #load-logo {
     width: 60%;
+}
+
+div.bar-footer {
+    clear: both;
 }

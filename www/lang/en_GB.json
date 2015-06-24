@@ -44,5 +44,7 @@
   "load-img-4": "4",
   "load-img-5": "5",
   "load-img-6": "6",
-  "resetting-current": "Resetting device ..."
+  "resetting-current": "Resetting device ...",
+  "button-more": "MORE",
+  "button-less": "LESS"
 }

@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "angular-imgcache.js": "~0.1.0",
-    "ngCordova": "~0.1.17-alpha"
+    "ngCordova": "~0.1.17-alpha",
+    "angular-scrollto": "~0.1.4"
   }
 }

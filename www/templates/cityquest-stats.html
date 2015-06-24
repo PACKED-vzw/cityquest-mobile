@@ -73,15 +73,15 @@
                 </div>
 
                 <div class="stat-item">
-                    <img img-cache ic-src="{{it.remote_image}}">
+                    <img img-cache ic-src="{{it.cached_image}}">
                     <p ng-bind-html='it.description | limitTo: 200' ng-hide="it.full"></p><span ng-hide="it.full">...</span>
                     <p ng-bind-html='it.description' ng-show="it.full"></p>
                     <p>
                     <button class="button button-small button-assertive" ng-hide="it.full" ng-click="it.full = true">
-                        MORE
+                        {{ 'button-more' | translate }}
                     </button>
                     <button class="button button-small button-assertive" ng-show="it.full" ng-click="it.full = false">
-                        LESS
+                        {{ 'button-less' | translate }}
                     </button>
                     </p>
                 </div>

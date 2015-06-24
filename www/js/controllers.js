@@ -347,7 +347,7 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
     })
 
 
-    .controller('CityquestItemCtrl', function ($scope, $rootScope, $stateParams, QRScanService, $ionicModal, ProgressTrackerService, ImgCache) {
+    .controller('CityquestItemCtrl', function ($scope, $rootScope, $stateParams, QRScanService, $ionicModal, ProgressTrackerService, $ionicScrollDelegate) {
         $scope.setCompletedState = function(){
             $scope.scanSuccess = true;
             var order = parseInt ($scope.currentItem.order, 10) + 1;
@@ -447,6 +447,7 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
             $scope.setCompletedState();
             $scope.progress.history[$scope.currentItem.order]="skipped";
             $scope.skippedItem = true;
+            //$ionicScrollDelegate.scrollTop ();
         };
 
 
@@ -530,8 +531,10 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
             }, function(error) {
 
             });
-
-        }
+            /* Scroll to top */
+            /*http://ionicframework.com/docs/api/service/$ionicScrollDelegate/*/
+            //$ionicScrollDelegate.scrollTop ();
+        };
 
         $rootScope.quest = $scope.quest;
         $rootScope.progress = $scope.progress;
