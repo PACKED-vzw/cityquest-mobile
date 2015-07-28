@@ -23,7 +23,7 @@
     "org.apache.cordova.file-transfer"
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "android",
+    "ios"
   ]
 }
