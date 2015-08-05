@@ -17,6 +17,18 @@
             <div class="col">
                 <div class="card">
                     <div class="item item-text-wrap">
+                        <h2><label for="remote-url-id">{{'remote-url' | translate}}</label></h2>
+                        <div>
+                            <input type="text" id="remote-url-id" ng-model="remote_url_url" placeholder="{{url}}" ng-change="updateSettings(remote_url_url)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="item item-text-wrap">
                         <h2>{{ 'settings-contact' | translate }}</h2>
                     </div>
                 </div>

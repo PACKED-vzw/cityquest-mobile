@@ -18,8 +18,10 @@
                                     <p>{{ 'load-notification-4' | translate }}</p>
                                 </span>
                             </div>
-
                             <div class="list" >
+                                <label class="item item-input" ng-hide="url">
+                                        <input type="text" id="remote-url-id" ng-model="remote_url_url" placeholder="Cityquest instance URL" ng-change="updateSettings(remote_url_url)" />
+                                </label>
 
                                 <label class="item item-input">
                                     <input type="text" placeholder="Quest key" ng-model="key">

@@ -23,6 +23,7 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
     function ($scope, quest, progress, $cordovaFileTransfer, $ionicPlatform, $timeout, $cordovaFile) {
         $scope.images_downloaded = false;
         $scope.errormsg = null;
+        $scope.ConfigSettings = new ConfigSettings();
         /* Image downloader */
         $scope.downloadImages = function () {
             /* Create directory */
@@ -80,7 +81,7 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
             /* Cache map */
             target = $scope.quest.image_dir + "map" + $scope.quest.details.id.toString ();
             console.log (target);
-            source = 'http://cityquest.be/' + $scope.quest.details.map.url;
+            source = $scope.ConfigSettings.read('url') + '/' + $scope.quest.details.map.url;
             $cordovaFileTransfer.download (source, target, {}, true)
                 .then (function (result) {
             }, function (error) {
@@ -120,9 +121,28 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
     /*
      Controller that allows the user to enter a key in the form and redirects to the fetching controller, responsible for downloading the quest
      */
-    .controller('CityquestLoadCtrl', function ($scope, $http, cityquestProvider) {
+    .controller('CityquestLoadCtrl', function ($scope, $http) {
+        $scope.ConfigSettings = new ConfigSettings();
+        $scope.url = $scope.ConfigSettings.read('url');
         $scope.loading = false;
         $scope.load = function () {
+        };
+        /**
+         * input is bound to remote-url-url (ng-model); ng-change is used to call this function when the user changes the url
+         */
+        $scope.updateSettings = function(url) {
+            console.log(url);
+            if (url === '' || typeof(url) == 'undefined') {
+                url = 'http://cityquest.be';
+            }
+            /* Test whether the URL works */
+            $http.get(url).
+                success(function() {
+                    $scope.ConfigSettings.write('url', url);
+                    console.log('ok');
+                }).
+                error(function(status) {}
+            );
         };
         $scope.loadQuest = function (key){
             window.alert ('Loading quest ...');
@@ -131,7 +151,7 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
                 $scope.loading = false;
             } else {
                 /* GET to see if item exists */
-                $http.get (cityquestProvider.url +  '/en/api/key/' + key).
+                $http.get ($scope.ConfigSettings.read('url') +  '/en/api/key/' + key).
                     success (function (data, status) {
                     // Continue
                     $scope.loading = true;
@@ -217,7 +237,15 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
         $rootScope.progress = $scope.progress;
     })
 
-    .controller('CityquestSettingsCtrl', function ($scope, $rootScope, $cordovaFile) {
+/**
+ * Settings Controller
+ * @param $scope
+ * @param $rootScope
+ * @param $cordovaFile
+ */
+    .controller('CityquestSettingsCtrl', function ($scope, $rootScope, $cordovaFile, $http) {
+        $scope.ConfigSettings = new ConfigSettings();
+        $scope.url = $scope.ConfigSettings.read('url');
         $scope.quest = $rootScope.quest;
         $scope.progress = $rootScope.progress;
         $scope.resetting = false;
@@ -238,6 +266,23 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
                 console.log (error);
                 alert ($scope.errormsg);
             })
+        };
+        /**
+         * input is bound to remote-url-url (ng-model); ng-change is used to call this function when the user changes the url
+         */
+        $scope.updateSettings = function(url) {
+            console.log(url);
+            if (url === '' || typeof(url) == 'undefined') {
+                url = 'http://cityquest.be';
+            }
+            /* Test whether the URL works */
+            $http.get(url).
+                success(function() {
+                    $scope.ConfigSettings.write('url', url);
+                    console.log('ok');
+                }).
+                error(function(status) {}
+                );
         };
     })
 
@@ -285,11 +330,12 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
     /*
     Controller for the map
      */
-    .controller('CityquestMapCtrl', function ($scope, $rootScope, $http, cityquestProvider) {
+    .controller('CityquestMapCtrl', function ($scope, $rootScope, $http) {
         /* Check whether we are offline; default is true; if we are online, use Google maps */
+        $scope.ConfigSettings = new ConfigSettings();
         $scope.online = false;
         /* Ugly, but works */
-        $http.get (cityquestProvider.url).
+        $http.get ($scope.ConfigSettings.read('url')).
             success (function () {
             $scope.online = true;
         });
@@ -531,9 +577,6 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
             }, function(error) {
 
             });
-            /* Scroll to top */
-            /*http://ionicframework.com/docs/api/service/$ionicScrollDelegate/*/
-            //$ionicScrollDelegate.scrollTop ();
         };
 
         $rootScope.quest = $scope.quest;

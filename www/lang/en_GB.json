@@ -46,5 +46,6 @@
   "load-img-6": "6",
   "resetting-current": "Resetting device ...",
   "button-more": "MORE",
-  "button-less": "LESS"
+  "button-less": "LESS",
+  "remote-url": "Cityquest instance URL"
 }
