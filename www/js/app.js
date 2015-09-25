@@ -136,13 +136,14 @@ angular.module('cityquest', ['ionic', 'pascalprecht.translate', 'cityquest.servi
             prefix: 'lang/',
             suffix: '.json'
         });
-        $translateProvider.registerAvailableLanguageKeys (['ca_ES', 'en_GB', 'es_ES', 'it_IT', 'lt_LT', 'nl_BE'], {
+        $translateProvider.registerAvailableLanguageKeys (['ca_ES', 'en_GB', 'es_ES', 'it_IT', 'lt_LT', 'nl_BE', 'de_DE'], {
             'nl': 'nl_BE',
             'es': 'es_ES',
             'ca': 'ca_ES',
             'it': 'it_IT',
             'lt': 'lt_LT',
-            'en': 'en_GB'
+            'en': 'en_GB',
+            'de': 'de_DE'
         }).determinePreferredLanguage ();
         $translateProvider.fallbackLanguage('en_GB');
 
