@@ -42,7 +42,7 @@ You will need to add the following plugins:
 * org.apache.cordova.file
 * org.apache.cordova.file-transfer
 * org.apache.cordova.device
-* org.apache.cordova.networkin-formation
+* org.apache.cordova.network-information
 
 Add them using the following command:
 
