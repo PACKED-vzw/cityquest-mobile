@@ -133,7 +133,7 @@ angular.module('cityquest.controllers', ['cityquest.services', 'ngCordova'])
         $scope.updateSettings = function(url) {
             console.log(url);
             if (url === '' || typeof(url) == 'undefined') {
-                url = 'http://cityquest.be';
+                url = 'https://cityquest.be';
             }
             /* Test whether the URL works */
             $http.get(url).
